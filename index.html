@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Closetly | Your digital wardrobe</title>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+	<section id="loginPage" class="login-page">
+		<div class="login-art">
+			<div class="brand">closet<span>ly</span></div>
+			<div class="art-copy"><h1>Get dressed with less digging.</h1><p>Your clothes, thoughtfully arranged. Keep a visual record of your wardrobe and find the right piece in seconds.</p></div>
+			<div class="art-footer">YOUR PERSONAL STYLE, IN ONE PLACE</div>
+		</div>
+		<div class="login-side">
+			<form id="loginForm" class="login-card">
+				<p class="eyebrow">Welcome in</p><h2 id="loginTitle">Create your account</h2><p id="loginDescription">Create an account to keep your wardrobe private on this browser.</p>
+				<div class="field"><label for="name">Your name</label><input id="name" type="text" placeholder="e.g. Alex" required></div>
+				<div class="field"><label for="password">Password</label><input id="password" type="password" placeholder="At least 4 characters" minlength="4" required></div>
+				<div class="field"><label>Shop for</label><div class="gender-options"><label class="gender-option"><input type="radio" name="gender" value="Male" required><span>Male</span></label><label class="gender-option"><input type="radio" name="gender" value="Female"><span>Female</span></label></div></div>
+				<button class="primary-btn" type="submit">Create account</button><button id="adminAccessBtn" class="text-btn access-btn" type="button">Admin access</button>
+			</form>
+		</div>
+	</section>
+
+	<section id="app" class="app hidden">
+		<header class="topbar"><div class="brand">closet<span>ly</span></div><div class="topbar-actions"><div class="user-pill"><div id="avatar" class="avatar"></div><span id="userLabel"></span></div><button id="logoutBtn" class="text-btn" type="button">Log out</button></div></header>
+		<main class="main">
+			<div class="welcome"><div><p class="eyebrow">Your wardrobe</p><h1 id="welcomeTitle">Good morning.</h1><p id="wardrobeSubtitle"></p></div><div><button id="pickOutfitBtn" class="secondary-btn" type="button">Pick an outfit</button> <button id="openModalBtn" class="add-btn" type="button"><span class="plus">+</span> Add a clothing item</button></div></div>
+			<div class="stats"><div class="stat"><strong id="totalCount">0</strong><span>items in your closet</span></div><div class="stat"><strong id="categoryCount">0</strong><span>categories covered</span></div><div class="stat"><strong id="latestCount">0</strong><span>added this week</span></div></div>
+			<div class="section-heading"><h2>Everything you own</h2><div class="filters"><input id="searchInput" type="search" placeholder="Search clothes"><select id="categoryFilter"><option value="All">All categories</option></select></div></div>
+			<p id="pickHint" class="pick-hint hidden">Click the pieces you want in your outfit, then review your selection above.</p>
+			<div id="outfitTray" class="outfit-tray hidden"><div><p class="eyebrow">Outfit selected</p><h3>Your picked outfit</h3><p id="outfitCount">0 pieces selected</p></div><div id="outfitItems" class="outfit-items"></div><button id="clearPickBtn" class="clear-pick-btn" type="button">Clear</button></div>
+			<div id="closetGrid" class="closet-grid"></div>
+		</main>
+	</section>
+	<section id="adminPage" class="app hidden"><header class="topbar"><div class="brand">closet<span>ly</span></div><button id="adminLogoutBtn" class="text-btn" type="button">Back to login</button></header><main class="main"><div class="welcome"><div><p class="eyebrow">Admin area</p><h1>Manage accounts.</h1><p>Review and manage local Closetly user accounts.</p></div></div><div class="admin-note">Demo admin login: <strong>admin</strong> / <strong>admin123</strong>. Passwords stay hidden. Use <strong>Reset password</strong> when a user needs access.</div><div class="section-heading"><h2>Registered accounts</h2><span id="accountCount" class="muted-label"></span></div><div id="accountList" class="account-list"></div></main></section>
+
+	<div id="modalBackdrop" class="modal-backdrop hidden"><form id="itemForm" class="modal"><div class="modal-header"><div><h2>Add to your closet</h2><p>Keep a clear visual record of what you own.</p></div><button id="closeModalBtn" class="close-btn" type="button" aria-label="Close">&times;</button></div><label class="upload-zone" for="photoInput"><img id="preview" class="preview hidden" alt="Selected clothing preview"><span id="uploadText"><strong>Choose a photo</strong>JPG or PNG, up to 5MB</span><input id="photoInput" type="file" accept="image/*" required></label><div class="field"><label for="itemName">What is it?</label><input id="itemName" type="text" placeholder="e.g. Linen shirt" required></div><div class="field"><label for="itemCategory">Category</label><select id="itemCategory" required><option value="" disabled selected>Choose a category</option><option>Tops</option><option>Bottoms</option><option>Dresses</option><option>Outerwear</option><option>Shoes</option><option>Accessories</option></select></div><div class="modal-actions"><button id="cancelBtn" class="secondary-btn" type="button">Cancel</button><button class="primary-btn" type="submit">Save item</button></div></form></div>
+	<div id="adminModalBackdrop" class="modal-backdrop hidden"><form id="adminLoginForm" class="modal"><div class="modal-header"><div><h2>Admin access</h2><p>Sign in to manage accounts.</p></div><button id="closeAdminBtn" class="close-btn" type="button" aria-label="Close">&times;</button></div><div class="field"><label for="adminName">Admin username</label><input id="adminName" type="text" required></div><div class="field"><label for="adminPassword">Admin password</label><input id="adminPassword" type="password" required></div><p id="adminError" class="form-error hidden">Incorrect admin username or password.</p><button class="primary-btn" type="submit">Open admin area</button></form></div>
+	<script src="js/app.js"></script>
+</body>
+</html>
