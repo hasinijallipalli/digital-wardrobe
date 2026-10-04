@@ -12,6 +12,7 @@ let items = [];
 let selectedItemIds = [];
 let pickingOutfit = false;
 let selectedImage = '';
+let authMode = 'login';
 const $ = (id) => document.getElementById(id);
 
 function saveAccounts() { localStorage.setItem(accountsKey, JSON.stringify(accounts)); }
@@ -54,6 +55,20 @@ function updateOutfitTray() {
 
 function closeModal() { $('modalBackdrop').classList.add('hidden'); $('itemForm').reset(); $('preview').classList.add('hidden'); $('uploadText').classList.remove('hidden'); selectedImage = ''; }
 function showAdmin() { $('loginPage').classList.add('hidden'); $('app').classList.add('hidden'); $('adminPage').classList.remove('hidden'); renderAccounts(); }
+function setAuthMode(mode) {
+	authMode = mode;
+	const creating = mode === 'create';
+	$('loginTitle').textContent = creating ? 'Create your account' : 'Log in to your wardrobe';
+	$('loginDescription').textContent = creating ? 'Create an account to keep your wardrobe private on this browser.' : 'Use your user ID and password to continue.';
+	$('name').previousElementSibling.textContent = creating ? 'Your name' : 'User ID';
+	$('genderField').classList.toggle('hidden', !creating);
+	$('genderField').querySelectorAll('input').forEach((input) => { input.required = creating && input.value === 'Male'; });
+	$('authSubmitBtn').textContent = creating ? 'Create account' : 'Log in';
+	$('loginModeBtn').classList.toggle('active', !creating);
+	$('createModeBtn').classList.toggle('active', creating);
+	$('loginModeBtn').setAttribute('aria-selected', String(!creating));
+	$('createModeBtn').setAttribute('aria-selected', String(creating));
+}
 function renderAccounts() {
 	$('accountCount').textContent = accounts.length + (accounts.length === 1 ? ' account' : ' accounts');
 	$('accountList').innerHTML = accounts.length ? accounts.map((account) => '<div class="account-row"><div class="account-details"><strong>' + account.name + '</strong><span>' + account.gender + ' · ' + (account.items || []).length + ' clothing items</span></div><div class="account-actions"><span class="status-label ' + (account.active === false ? 'disabled' : '') + '">' + (account.active === false ? 'Disabled' : 'Active') + '</span><button class="secondary-btn account-toggle" data-id="' + account.id + '" type="button">' + (account.active === false ? 'Activate' : 'Disable') + '</button><button class="secondary-btn account-reset" data-id="' + account.id + '" type="button">Reset password</button><button class="danger-btn account-delete" data-id="' + account.id + '" type="button">Delete</button></div></div>').join('') : '<div class="empty"><strong>No accounts yet.</strong>User accounts will appear here.</div>';
@@ -63,7 +78,9 @@ function renderAccounts() {
 }
 
 if (profile) showApp();
-$('loginForm').addEventListener('submit', (event) => { event.preventDefault(); const name = $('name').value.trim(); const password = $('password').value; const gender = document.querySelector('input[name="gender"]:checked').value; const existing = accounts.find((account) => account.name.toLowerCase() === name.toLowerCase()); if (!existing) { const newAccount = { id: Date.now().toString(), name, password, gender, active: true, items: [] }; accounts.push(newAccount); saveAccounts(); $('loginTitle').textContent = 'Account created'; $('loginDescription').textContent = 'Your account is ready. Enter your details once more to log in.'; $('loginForm button[type="submit"]').textContent = 'Log in to my wardrobe'; $('password').value = ''; alert('Account created. Please log in to continue.'); return; } if (existing.password !== password) return alert('Incorrect password. Please try again.'); if (existing.active === false) return alert('This account has been disabled by the admin.'); profile = existing; localStorage.setItem(sessionKey, JSON.stringify(profile)); showApp(); });
+$('loginForm').addEventListener('submit', (event) => { event.preventDefault(); const name = $('name').value.trim(); const password = $('password').value; const existing = accounts.find((account) => account.name.toLowerCase() === name.toLowerCase()); if (authMode === 'create') { const gender = document.querySelector('input[name="gender"]:checked')?.value; if (existing) return alert('That user ID already exists. Please log in or choose another one.'); const newAccount = { id: Date.now().toString(), name, password, gender, active: true, items: [] }; accounts.push(newAccount); saveAccounts(); $('loginForm').reset(); setAuthMode('login'); alert('Account created. Please log in to continue.'); return; } if (!existing || existing.password !== password) return alert('Incorrect user ID or password. Please try again.'); if (existing.active === false) return alert('This account has been disabled by the admin.'); profile = existing; localStorage.setItem(sessionKey, JSON.stringify(profile)); showApp(); });
+$('loginModeBtn').addEventListener('click', () => setAuthMode('login'));
+$('createModeBtn').addEventListener('click', () => setAuthMode('create'));
 $('logoutBtn').addEventListener('click', () => { localStorage.removeItem(sessionKey); location.reload(); });
 $('adminAccessBtn').addEventListener('click', () => $('adminModalBackdrop').classList.remove('hidden'));
 $('closeAdminBtn').addEventListener('click', () => $('adminModalBackdrop').classList.add('hidden'));

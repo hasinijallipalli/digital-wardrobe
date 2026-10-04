@@ -15,11 +15,12 @@
 		</div>
 		<div class="login-side">
 			<form id="loginForm" class="login-card">
-				<p class="eyebrow">Welcome in</p><h2 id="loginTitle">Create your account</h2><p id="loginDescription">Create an account to keep your wardrobe private on this browser.</p>
-				<div class="field"><label for="name">Your name</label><input id="name" type="text" placeholder="e.g. Alex" required></div>
+				<p class="eyebrow">Welcome in</p><h2 id="loginTitle">Log in to your wardrobe</h2><p id="loginDescription">Use your user ID and password to continue.</p>
+				<div class="auth-switch" role="tablist" aria-label="Account access"><button id="loginModeBtn" class="auth-switch-btn active" type="button" role="tab" aria-selected="true">Log in</button><button id="createModeBtn" class="auth-switch-btn" type="button" role="tab" aria-selected="false">Create an account</button></div>
+				<div class="field"><label for="name">User ID</label><input id="name" type="text" placeholder="e.g. Alex" required></div>
 				<div class="field"><label for="password">Password</label><input id="password" type="password" placeholder="At least 4 characters" minlength="4" required></div>
-				<div class="field"><label>Shop for</label><div class="gender-options"><label class="gender-option"><input type="radio" name="gender" value="Male" required><span>Male</span></label><label class="gender-option"><input type="radio" name="gender" value="Female"><span>Female</span></label></div></div>
-				<button class="primary-btn" type="submit">Create account</button><button id="adminAccessBtn" class="text-btn access-btn" type="button">Admin access</button>
+				<div id="genderField" class="field hidden"><label>Shop for</label><div class="gender-options"><label class="gender-option"><input type="radio" name="gender" value="Male"><span>Male</span></label><label class="gender-option"><input type="radio" name="gender" value="Female"><span>Female</span></label></div></div>
+				<button id="authSubmitBtn" class="primary-btn" type="submit">Log in</button><button id="adminAccessBtn" class="text-btn access-btn" type="button">Admin access</button>
 			</form>
 		</div>
 	</section>
