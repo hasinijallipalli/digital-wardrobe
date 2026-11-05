@@ -1,0 +1,16 @@
+{
+  "name": "digital-wardrobe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Closetly digital wardrobe",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "bcryptjs": "^3.0.2",
+    "express": "^4.21.2"
+  }
+}

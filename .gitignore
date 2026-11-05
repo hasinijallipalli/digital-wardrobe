@@ -1,0 +1,4 @@
+node_modules/
+wardrobe.db
+wardrobe.db-shm
+wardrobe.db-wal
