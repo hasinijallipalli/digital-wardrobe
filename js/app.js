@@ -137,6 +137,29 @@ $('createModeBtn').addEventListener('click', () => setAuthMode('create'));
 $('logoutBtn').addEventListener('click', async () => { await api('/api/auth/logout', { method: 'POST' }); location.reload(); });
 $('adminAccessBtn').addEventListener('click', () => $('adminModalBackdrop').classList.remove('hidden'));
 $('closeAdminBtn').addEventListener('click', () => $('adminModalBackdrop').classList.add('hidden'));
+$('forgotPasswordBtn').addEventListener('click', () => $('resetModalBackdrop').classList.remove('hidden'));
+$('closeResetBtn').addEventListener('click', () => $('resetModalBackdrop').classList.add('hidden'));
+$('resetModalBackdrop').addEventListener('click', (event) => { if (event.target === $('resetModalBackdrop')) $('resetModalBackdrop').classList.add('hidden'); });
+$('resetPasswordForm').addEventListener('submit', async (event) => {
+	event.preventDefault();
+	const password = $('newPassword').value;
+	const confirmation = $('confirmPassword').value;
+	$('resetError').classList.add('hidden');
+	if (password !== confirmation) {
+		$('resetError').textContent = 'Passwords do not match.';
+		$('resetError').classList.remove('hidden');
+		return;
+	}
+	try {
+		await api('/api/auth/reset-password', { method: 'POST', body: JSON.stringify({ name: $('resetName').value.trim(), password }) });
+		$('resetPasswordForm').reset();
+		$('resetModalBackdrop').classList.add('hidden');
+		alert('Password reset successfully. You can now log in.');
+	} catch (error) {
+		$('resetError').textContent = error.message;
+		$('resetError').classList.remove('hidden');
+	}
+});
 $('adminLoginForm').addEventListener('submit', async (event) => {
 	event.preventDefault();
 	const name = $('adminName').value;

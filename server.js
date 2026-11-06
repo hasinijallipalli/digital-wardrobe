@@ -101,6 +101,18 @@ app.post('/api/auth/login', async (req, res) => {
   res.json(publicUser(user));
 });
 
+app.post('/api/auth/reset-password', async (req, res) => {
+  const name = req.body.name?.trim();
+  const password = req.body.password;
+  if (!name || !password || password.length < 4) {
+    return res.status(400).json({ error: 'User ID and a password of at least 4 characters are required.' });
+  }
+  const user = db.prepare('SELECT id FROM users WHERE name = ?').get(name);
+  if (!user) return res.status(404).json({ error: 'That user ID was not found.' });
+  db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(await bcrypt.hash(password, 12), user.id);
+  res.json({ ok: true });
+});
+
 app.post('/api/auth/logout', (req, res) => {
   const token = req.headers.cookie?.match(/(?:^|;\s*)closetly_session=([^;]+)/)?.[1];
   if (token) db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(hashToken(token));
